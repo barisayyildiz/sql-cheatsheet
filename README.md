@@ -103,6 +103,8 @@ select * from musteri where meslek=(select id from meslek where ad='mühendis') 
 ![image](https://user-images.githubusercontent.com/37713845/151698535-c6b3f8bf-e44c-4acc-8d17-efc135755da5.png)
 
 
+<img src="https://www.arasindakifark.net/wp-content/uploads/2016/03/sql_joins.jpg" width="75%" />
+
 # INNER JOIN
 ```sql
 select isim, soyisim, meslek.ad as meslek from musteri inner join meslek on musteri.meslek = meslek.id
@@ -124,7 +126,24 @@ select fakulte.ad, count(*) as toplam from bolum inner join fakulte on bolum.bol
 ```
 ![image](https://user-images.githubusercontent.com/37713845/151700942-e0176f4e-f7dd-4433-8294-9206b6696830.png)
 
+# LEFT JOIN
+```sql
+select * from bolum
+select * from fakulte
+```
+![image](https://user-images.githubusercontent.com/37713845/151717466-2ee1f105-1d31-4155-b271-eb15b201b817.png)
+![image](https://user-images.githubusercontent.com/37713845/151717470-b6639824-d2ec-4079-b2bc-73a083ca02b4.png)
 
+```sql
+select * bolumid, bolum.ad, fakulte.ad from bolum left join fakulte on bolum.bolumf = fakulte.id
+```
+![image](https://user-images.githubusercontent.com/37713845/151717477-035505cb-a12a-45c4-b55d-bb43d70877e5.png)
+
+
+```sql
+select * bolumid, bolum.ad, fakulte.ad from fakulte left join bolum on bolum.bolumf = fakulte.id
+```
+![image](https://user-images.githubusercontent.com/37713845/151717488-a0d0c970-67f9-4e21-bc82-fc62b17010d8.png)
 
 
 

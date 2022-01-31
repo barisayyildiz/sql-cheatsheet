@@ -145,5 +145,132 @@ select * bolumid, bolum.ad, fakulte.ad from fakulte left join bolum on bolum.bol
 ```
 ![image](https://user-images.githubusercontent.com/37713845/151717488-a0d0c970-67f9-4e21-bc82-fc62b17010d8.png)
 
+# INTERSECT & EXCEPT & UNION
+```sql
+select * from bolum2
+select * from bolum3
+```
+![image](https://user-images.githubusercontent.com/37713845/151772259-0b760e2d-0433-495e-ba02-e177ff960121.png)
+![image](https://user-images.githubusercontent.com/37713845/151772276-15699afb-354f-4a72-add6-57061a341308.png)
+```sql
+select * from bolum2
+intersect
+select * from bolum3
+
+select * from bolum2
+except
+select * from bolum3
+
+select * from bolum2
+union
+select * from bolum3
+```
+![image](https://user-images.githubusercontent.com/37713845/151772333-703e18fa-dc40-4f7e-8998-dfb143fe2425.png)
+![image](https://user-images.githubusercontent.com/37713845/151772350-d6b92169-fec0-426a-9e95-49658beb4dc2.png)
+![image](https://user-images.githubusercontent.com/37713845/151772613-6f19ca01-2685-4c6c-a035-156f1d0ed8db.png)
+
+
+# [SQL Server Functions](https://www.w3schools.com/sql/sql_ref_sqlserver.asp)
+
+# VIEW
+```sql
+create view view1
+as
+select bolumid, bolum.ad, fakulte.ad as fakulte_ismi from bolum inner join fakulte on fakulte.id = bolum.bolumf
+
+select * from view1
+```
+![image](https://user-images.githubusercontent.com/37713845/151782970-dbb394bb-1fcf-4ab9-aaa3-645fbbd05466.png)
+
+
+# FUNCTION
+```sql
+create function toplam(s1 int, s2 int)
+returns int
+language plpgsql
+as
+$$
+declare
+	sonuc integer;
+begin
+	sonuc:=s1+s2;
+	return sonuc;
+end;
+$$;
+
+select toplam(2,3)
+```
+![image](https://user-images.githubusercontent.com/37713845/151790502-12269131-c027-4aa7-8426-11ba363625cb.png)
+
+
+```sql
+create function kdvli(fiyat float)
+returns float
+language plpgsql
+as
+$$
+begin
+fiyat := fiyat*1.08;
+return fiyat;
+end;
+$$;
+
+
+select ad, fiyat, kdvli(fiyat) from kitaplar
+```
+![image](https://user-images.githubusercontent.com/37713845/151791433-935a5d76-6f31-407e-97af-81399e52ec2d.png)
+
+
+```sql
+create function kitapgetir(param varchar)
+returns table (
+	idsutun int,
+	kitapadsutun varchar,
+	kitapyazarsutun varchar
+)
+language plpgsql
+as
+$$
+begin
+	return query 
+		select id, ad, yazar from kitaplar where ad like param;
+end;
+$$;
+
+select * from kitapgetir('%ikayesi%')
+```
+![image](https://user-images.githubusercontent.com/37713845/151792638-83d11ee0-ff85-4180-8d18-579f52885ea8.png)
+
+
+# TRIGGER
+### Trigger Function
+```sql
+create or replace function test()
+returns trigger
+as
+$$
+begin
+update toplamfakulte set toplam=toplam+1;
+return new;
+end;
+$$
+language 'plpgsql'
+```
+
+### Trigger
+```sql
+create trigger testtrig
+after insert
+on fakulte
+for each row
+execute procedure test()
+```
+
+```sql
+insert into fakulte (id, ad) values (5, 'konservatuar')
+```
+![image](https://user-images.githubusercontent.com/37713845/151796619-f47dde8e-b075-4b35-9f33-2465c18c1fab.png)
+![image](https://user-images.githubusercontent.com/37713845/151796676-cd17c99f-e1fb-49f4-b7c9-defd86ee6005.png)
+
 
 
